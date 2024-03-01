@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  phone     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SubClient {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SubAdmin {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SofaCategory {
+  id          String       @id @default(cuid())
+  title       String       @unique
+  description String
+  imageUrl    String
+  popular     Boolean      @default(false)
+  title1      String?
+  title2      String?
+  title3      String?
+  title4      String?
+  para1       String?
+  para2       String?
+  para3       String?
+  para4       String?
+  sofaDesigns SofaDesign[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model SofaDesign {
+  id         String       @id @default(cuid())
+  title      String       @unique
+  imageUrl   String
+  category   SofaCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model State {
+  id        String   @id @default(cuid())
+  name      String
+  citys     City[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model City {
+  id        String     @id @default(cuid())
+  name      String
+  state     State      @relation(fields: [stateId], references: [id])
+  stateId   String
+  locations Location[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Location {
+  id        String   @id @default(cuid())
+  name      String
+  city      City     @relation(fields: [cityId], references: [id])
+  cityId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Blog {
+  id           String   @id @default(cuid())
+  title1       String
+  title2       String?
+  title3       String?
+  title4       String?
+  description1 String
+  description2 String?
+  description3 String?
+  description4 String?
+  imageUrl     String
+  links        String?
+  linksUrl     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Query {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  message   String
+  location  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

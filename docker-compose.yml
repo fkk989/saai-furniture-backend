@@ -1,0 +1,30 @@
+version: '4'
+
+services:
+  saai-postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: faisal
+      POSTGRES_PASSWORD: fkk989
+      POSTGRES_DB: postgres
+    volumes:
+      - saai-db:/var/lib/postgresql/data
+
+  saa-server:
+    image: saai-server
+    depends_on:
+      - saai-postgres
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: postgresql://faisal:fkk989@saai-postgres/postgres?schema=public
+      PORT: 3000
+      JWT_SECRET: SECRET
+      SALT_ROUNDS: 8
+
+volumes:
+  saai-db:
+    driver: local

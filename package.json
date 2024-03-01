@@ -1,0 +1,48 @@
+{
+  "name": "saa-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "migrate": "npx prisma migrate dev --name init",
+    "start": "nodemon start dist/index.js",
+    "dev": "tsc-watch --onSuccess \" npm run start\"",
+    "build": "tsc -p .",
+    "postinstall": "prisma generate",
+    "vercel-build": "echo hello"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/body-parser": "^1.19.5",
+    "@types/cookie-parser": "^1.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20.11.21",
+    "@types/uuid": "^9.0.8",
+    "nodemon": "^3.1.0",
+    "prisma": "^5.9.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.515.0",
+    "@aws-sdk/s3-request-presigner": "^3.515.0",
+    "@prisma/client": "^5.9.0",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "email-validator": "^2.0.4",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "pm2": "^5.3.1",
+    "tsc-watch": "^6.0.4",
+    "uuid": "^9.0.1",
+    "zod": "^3.22.4"
+  }
+}
