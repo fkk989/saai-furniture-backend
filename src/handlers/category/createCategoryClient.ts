@@ -2,26 +2,13 @@ import { Response } from "express";
 import { NextFncReq } from "../../middleware";
 import { PrismaSingleton } from "../../clients/db";
 import { z } from "zod";
+import { categoryInput } from "./create";
 const prismaClient = PrismaSingleton.getInstance().prisma;
 
-export const categoryInput = z.object({
-  id: z.string().optional(),
-  title: z.string(),
-  description: z.string().max(510),
-  title1: z.string().optional(),
-  title2: z.string().optional(),
-  title3: z.string().optional(),
-  title4: z.string().optional(),
-  para1: z.string().optional(),
-  para2: z.string().optional(),
-  para3: z.string().optional(),
-  para4: z.string().optional(),
-  imageUrl: z.string(),
-  popular: z.boolean(),
-});
-
-export async function createCategory(req: NextFncReq, res: Response) {
+export async function createCategoryClient(req: NextFncReq, res: Response) {
   try {
+    const client = req.client;
+    const subClient = req.subClient;
     const reqBody = req.body;
 
     const parsedInput = categoryInput.safeParse(reqBody);
@@ -47,6 +34,26 @@ export async function createCategory(req: NextFncReq, res: Response) {
       para4,
       popular,
     } = parsedInput.data;
+
+    const categoryCount = await prismaClient.sofaCategory.count();
+
+    if (client) {
+      if (categoryCount >= client.categoryLimit) {
+        return res.status(401).json({
+          success: false,
+          message: "category limit reached",
+        });
+      }
+    }
+
+    if (subClient) {
+      if (categoryCount >= subClient.categoryLimit) {
+        return res.status(401).json({
+          success: false,
+          message: "category limit reached",
+        });
+      }
+    }
 
     const category = await prismaClient.sofaCategory.create({
       data: {

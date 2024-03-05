@@ -7,11 +7,14 @@ import {
   updateClient,
   defaultClient,
   createSubClient,
+  fetchAllSubClient,
 } from "../handlers";
 
 export const clientRouter = Router();
 
 clientRouter.get("/", authenticateClient, fetchClient);
+
+clientRouter.get("/all-client", authenticateClient, fetchAllSubClient);
 
 clientRouter.get("/default", defaultClient);
 

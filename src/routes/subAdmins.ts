@@ -1,10 +1,9 @@
 import { Router } from "express";
 import { authenticateSubAdmin, authenticateAdmin } from "../middleware";
 import {
-  updateAdmin,
+  deleteSubAdmin,
   fetchSubAdmin,
   loginSubAdmin,
-  createSubAdmin,
   updateSubAdmin,
 } from "../handlers";
 
@@ -15,3 +14,5 @@ subAdminRouter.get("/", authenticateSubAdmin, fetchSubAdmin);
 subAdminRouter.post("/login", loginSubAdmin);
 
 subAdminRouter.put("/update", authenticateSubAdmin, updateSubAdmin);
+
+subAdminRouter.delete("/delete", authenticateAdmin, deleteSubAdmin);

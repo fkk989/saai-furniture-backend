@@ -1,19 +1,18 @@
 import { Response } from "express";
 import { NextFncReq } from "../../middleware";
-
 import { PrismaSingleton } from "../../clients/db";
 import { z } from "zod";
+
 const prismaClient = PrismaSingleton.getInstance().prisma;
 
-export const deleteCategoryInput = z.object({
+export const deleteDesignInput = z.object({
   id: z.string(),
 });
-
-export async function deleteCategory(req: NextFncReq, res: Response) {
+export async function deleteDesign(req: NextFncReq, res: Response) {
   try {
     const reqBody = req.body;
 
-    const parsedInput = deleteCategoryInput.safeParse(reqBody);
+    const parsedInput = deleteDesignInput.safeParse(reqBody);
 
     if (!parsedInput.success) {
       return res.status(401).json({
@@ -24,17 +23,13 @@ export async function deleteCategory(req: NextFncReq, res: Response) {
 
     const { id } = parsedInput.data;
 
-    const deleteCategoryDesigns = await prismaClient.sofaDesign.deleteMany({
-      where: { category: { id } },
-    });
-
-    const category = await prismaClient.sofaCategory.delete({
+    const deletedDesign = await prismaClient.sofaDesign.delete({
       where: { id },
     });
     return res.status(200).json({
-      message: "category deleted successfully",
+      message: "design deleted successfully",
       success: true,
-      category,
+      design: deletedDesign,
     });
   } catch (e: any) {
     return res.status(401).json({

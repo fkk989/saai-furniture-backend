@@ -17,21 +17,25 @@ model User {
 }
 
 model Client {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  password      String
+  categoryLimit Int
+  designLimit   Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model SubClient {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  password      String
+  categoryLimit Int
+  designLimit   Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Admin {
@@ -75,6 +79,9 @@ model SofaDesign {
   id         String       @id @default(cuid())
   title      String       @unique
   imageUrl   String
+  imageUrl2  String?
+  imageUrl3  String?
+  imageUrl4  String?
   category   SofaCategory @relation(fields: [categoryId], references: [id])
   categoryId String
   createdAt  DateTime     @default(now())
@@ -110,7 +117,7 @@ model Location {
 
 model Blog {
   id           String   @id @default(cuid())
-  title1       String
+  title1       String   @unique
   title2       String?
   title3       String?
   title4       String?

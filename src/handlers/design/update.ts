@@ -17,7 +17,8 @@ export async function updateDesign(req: NextFncReq, res: Response) {
       });
     }
 
-    const { id, title, imageUrl } = parsedInput.data;
+    const { id, title, imageUrl, imageUrl2, imageUrl3, imageUrl4 } =
+      parsedInput.data;
 
     const designInDb = await prismaClient.sofaDesign.findUnique({
       where: { id },
@@ -35,6 +36,9 @@ export async function updateDesign(req: NextFncReq, res: Response) {
       data: {
         title,
         imageUrl,
+        imageUrl2,
+        imageUrl3,
+        imageUrl4,
       },
     });
 

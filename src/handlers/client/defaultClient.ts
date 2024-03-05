@@ -10,9 +10,13 @@ const secret = process.env.JWT_SECRET;
 const DEFAULT_CLIENT_EMAIL = process.env.DEFAULT_CLIENT_EMAIL;
 const DEFAULT_CLIENT_PASSWORD = process.env.DEFAULT_CLIENT_PASSWORD;
 const DEFAULT_CLIENT_NAME = process.env.DEFAULT_CLIENT_NAME;
+const DEFAULT_CATEGORY_LIMIT = process.env.DEFAULT_CATEGORY_LIMIT;
+const DEFAULT_DESIGN_LIMIT = process.env.DEFAULT_DESIGN_LIMIT;
 
 export async function defaultClient(req: Request, res: Response) {
   try {
+    const categoryLimit = parseInt(DEFAULT_CATEGORY_LIMIT);
+    const designLimit = parseInt(DEFAULT_DESIGN_LIMIT);
     // hashing password
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     const hashedPassword = await bcrypt.hash(DEFAULT_CLIENT_PASSWORD, salt);
@@ -33,6 +37,8 @@ export async function defaultClient(req: Request, res: Response) {
         name: DEFAULT_CLIENT_NAME,
         email: DEFAULT_CLIENT_EMAIL,
         password: hashedPassword,
+        categoryLimit,
+        designLimit,
       },
     });
 

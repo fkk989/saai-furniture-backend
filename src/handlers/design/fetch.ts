@@ -5,15 +5,15 @@ import { PrismaSingleton } from "../../clients/db";
 import { z } from "zod";
 const prismaClient = PrismaSingleton.getInstance().prisma;
 
-export const deleteCategoryInput = z.object({
-  id: z.string(),
+const fetchDesignInput = z.object({
+  categoryTitle: z.string(),
 });
 
-export async function deleteCategory(req: NextFncReq, res: Response) {
+export async function fetchDesign(req: NextFncReq, res: Response) {
   try {
     const reqBody = req.body;
 
-    const parsedInput = deleteCategoryInput.safeParse(reqBody);
+    const parsedInput = fetchDesignInput.safeParse(reqBody);
 
     if (!parsedInput.success) {
       return res.status(401).json({
@@ -22,19 +22,16 @@ export async function deleteCategory(req: NextFncReq, res: Response) {
       });
     }
 
-    const { id } = parsedInput.data;
-
-    const deleteCategoryDesigns = await prismaClient.sofaDesign.deleteMany({
-      where: { category: { id } },
+    const { categoryTitle } = parsedInput.data;
+    const designs = await prismaClient.sofaDesign.findMany({
+      where: { category: { title: categoryTitle } },
+      orderBy: { createdAt: "asc" },
     });
 
-    const category = await prismaClient.sofaCategory.delete({
-      where: { id },
-    });
     return res.status(200).json({
-      message: "category deleted successfully",
+      message: "fetched all designs",
       success: true,
-      category,
+      designs,
     });
   } catch (e: any) {
     return res.status(401).json({

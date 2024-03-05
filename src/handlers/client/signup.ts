@@ -13,6 +13,8 @@ export const clientInput = z.object({
   email: z.string().max(40),
   password: z.string().max(30),
   confirmPassword: z.string().max(30),
+  categoryLimit: z.number(),
+  designLimit: z.number(),
 });
 
 // env var's
@@ -36,7 +38,14 @@ export async function signupClient(
       });
     }
 
-    const { name, email, password, confirmPassword } = parsedInput.data;
+    const {
+      name,
+      email,
+      password,
+      confirmPassword,
+      categoryLimit,
+      designLimit,
+    } = parsedInput.data;
 
     if (password !== confirmPassword) {
       return res.status(401).json({
@@ -74,6 +83,8 @@ export async function signupClient(
         name: name!,
         email,
         password: hashedPassword,
+        categoryLimit,
+        designLimit,
       },
     });
 

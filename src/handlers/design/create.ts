@@ -9,6 +9,9 @@ export const designInput = z.object({
   categoryId: z.string().optional(),
   title: z.string().max(50),
   imageUrl: z.string(),
+  imageUrl2: z.string().optional(),
+  imageUrl3: z.string().optional(),
+  imageUrl4: z.string().optional(),
 });
 
 export async function createDesign(req: NextFncReq, res: Response) {
@@ -24,12 +27,27 @@ export async function createDesign(req: NextFncReq, res: Response) {
       });
     }
 
-    const { categoryId, title, imageUrl } = parsedInput.data;
+    const { categoryId, title, imageUrl, imageUrl2, imageUrl3, imageUrl4 } =
+      parsedInput.data;
+
+    const designInDb = await prismaClient.sofaDesign.findUnique({
+      where: { title, category: { id: categoryId } },
+    });
+
+    if (designInDb) {
+      return res.status(401).json({
+        success: false,
+        message: "Design already exsts",
+      });
+    }
 
     const design = await prismaClient.sofaDesign.create({
       data: {
-        title,
+        title: title.toLowerCase(),
         imageUrl,
+        imageUrl2: imageUrl2,
+        imageUrl3: imageUrl3,
+        imageUrl4: imageUrl4,
         category: { connect: { id: categoryId } },
       },
     });

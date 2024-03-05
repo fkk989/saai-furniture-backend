@@ -1,14 +1,18 @@
 import { Response } from "express";
 import { NextFncReq } from "../../middleware";
 import { PrismaSingleton } from "../../clients/db";
-import { deleteCategoryInput } from "./delete";
+import { z } from "zod";
+
 const prismaClient = PrismaSingleton.getInstance().prisma;
+const fetchInput = z.object({
+  title: z.string(),
+});
 
 export async function fetchCategoryByTitle(req: NextFncReq, res: Response) {
   try {
     const reqBody = req.body;
 
-    const parsedInput = deleteCategoryInput.safeParse(reqBody);
+    const parsedInput = fetchInput.safeParse(reqBody);
 
     if (!parsedInput.success) {
       return res.status(401).json({
