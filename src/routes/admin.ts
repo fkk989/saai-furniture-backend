@@ -8,6 +8,7 @@ import {
   defaultAdmin,
   createSubAdmin,
   fetchAllSubAdmin,
+  updateClientLimit,
 } from "../handlers";
 
 export const adminRouter = Router();
@@ -23,3 +24,5 @@ adminRouter.post("/add-sub-admin", authenticateAdmin, createSubAdmin);
 adminRouter.put("/update", authenticateAdmin, updateAdmin);
 
 adminRouter.get("/all-sub-admin", authenticateAdmin, fetchAllSubAdmin);
+
+adminRouter.post("/update-limit", authenticateAdmin, updateClientLimit);

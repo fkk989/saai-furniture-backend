@@ -1,4 +1,4 @@
-import { SubClient } from "@prisma/client";
+import { Client, SubClient } from "@prisma/client";
 import { Response } from "express";
 import { z } from "zod";
 import emailValidator from "email-validator";
@@ -13,8 +13,6 @@ export const subClientInput = z.object({
   email: z.string().max(40),
   password: z.string().max(30),
   confirmPassword: z.string().max(30),
-  categoryLimit: z.number(),
-  designLimit: z.number(),
 });
 
 // env var's
@@ -23,11 +21,13 @@ const secret = process.env.JWT_SECRET;
 
 export async function createSubClient(
   req: {
+    client?: Client;
     body: Partial<SubClient>;
   },
   res: Response
 ) {
   try {
+    const client = req.client;
     const reqBody = req.body;
     const parsedInput = subClientInput.safeParse(reqBody);
 
@@ -38,14 +38,7 @@ export async function createSubClient(
       });
     }
 
-    const {
-      name,
-      email,
-      password,
-      confirmPassword,
-      categoryLimit,
-      designLimit,
-    } = parsedInput.data;
+    const { name, email, password, confirmPassword } = parsedInput.data;
 
     if (password !== confirmPassword) {
       return res.status(401).json({
@@ -83,8 +76,8 @@ export async function createSubClient(
         name: name!,
         email,
         password: hashedPassword,
-        categoryLimit,
-        designLimit,
+        categoryLimit: client?.categoryLimit!,
+        designLimit: client?.designLimit!,
       },
     });
 

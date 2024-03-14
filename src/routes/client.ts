@@ -8,20 +8,17 @@ import {
   defaultClient,
   createSubClient,
   fetchAllSubClient,
+  deleteSubClient,
 } from "../handlers";
 
 export const clientRouter = Router();
 
 clientRouter.get("/", authenticateClient, fetchClient);
-
-clientRouter.get("/all-client", authenticateClient, fetchAllSubClient);
-
 clientRouter.get("/default", defaultClient);
-
 clientRouter.post("/login", loginClient);
-
 clientRouter.post("/signup", authenticateClient, signupClient);
+clientRouter.put("/update", authenticateClient, updateClient);
 
 clientRouter.post("/add-sub-client", authenticateClient, createSubClient);
-
-clientRouter.put("/update", authenticateClient, updateClient);
+clientRouter.get("/all-sub-client", authenticateClient, fetchAllSubClient);
+clientRouter.delete("/delete-sub-client", authenticateClient, deleteSubClient);

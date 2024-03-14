@@ -9,3 +9,4 @@ subClientRouter.get("/", authenticateSubClient, fetchsubClient);
 subClientRouter.post("/login", loginSubClient);
 
 subClientRouter.put("/update", authenticateSubClient, updateSubClient);
+
